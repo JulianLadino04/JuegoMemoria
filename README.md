@@ -75,51 +75,11 @@ git clone https://github.com/tu-usuario/JuegoMemoria.git
 
 ---
 
-## 📸 Pantallas
-
-| Inicio | Juego | Resultados |
-|--------|-------|------------|
-| ![Home](screenshots/home.png) | ![Game](screenshots/game.png) | ![Result](screenshots/result.png) |
-
----
-
-## 🤖 Reflexión sobre el uso de la IA
-
-### ¿Qué prompts utilizó para solicitar ayuda a la IA?
-- *"Dime paso a paso qué tengo que hacer para desarrollar el juego de memoria en Kotlin con Jetpack Compose"*
-- *"Dame el código del GameViewModel con la lógica del juego"*
-- *"Me sale este error en el build.gradle, cómo lo soluciono"*
-
-### ¿Qué sugerencias de la IA fueron útiles?
-- La estructura del proyecto y organización de paquetes
-- El uso de `StateFlow` y `ViewModel` para gestión del estado
-- La implementación del retardo de 1 segundo con `delay()` en coroutines
-- La animación de volteo de cartas con `animateFloatAsState`
-
-### ¿Qué aspectos del código tuvo que corregir manualmente?
-- Ajuste de versiones en `build.gradle.kts` y `libs.versions.toml`
-- Corrección de la sintaxis de `compileSdk` para AGP 9
-- Reemplazo de `kotlinOptions` por `kotlin { compilerOptions {} }`
-
-### ¿Qué aprendió del proceso de trabajar con IA?
-- La IA es una herramienta de apoyo, no un reemplazo del criterio del desarrollador
-- Es importante entender el código generado antes de usarlo
-- Los errores de configuración requieren contexto específico del proyecto
-- La IA puede sugerir versiones desactualizadas que hay que verificar
-
-### ¿Qué errores aparecieron y cómo los solucionó?
-| Error | Solución |
-|-------|----------|
-| `Unresolved reference kotlin.android` | Eliminar el plugin por incompatibilidad con AGP 9 |
-| `kotlinOptions unresolved` | Reemplazar por `kotlin { compilerOptions {} }` |
-| `compileSdk` con sintaxis incorrecta | Usar `compileSdk = 36` en lugar de la sintaxis de bloque |
-| Dependencias requieren API 36 | Actualizar `compileSdk` y `targetSdk` a 36 |
-
----
-
 ## 👨‍💻 Autor
 
-**Julian Ladino**  
+**Julian Andres Ladino**  
+**Hulbert Alejandro Arango**  
+**Mauricio Rios de la Ossa**  
 Universidad del Quindío  
 Ingeniería de Sistemas
 
