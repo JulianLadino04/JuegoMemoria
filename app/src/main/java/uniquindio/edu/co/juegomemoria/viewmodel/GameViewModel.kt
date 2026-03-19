@@ -19,6 +19,7 @@ class GameViewModel : ViewModel() {
 
     // Cartas actualmente volteadas (máximo 2)
     private val _flippedCards = MutableStateFlow<List<Int>>(emptyList())
+    val flippedCards: StateFlow<List<Int>> = _flippedCards
 
     // Número de intentos
     private val _attempts = MutableStateFlow(0)
@@ -27,6 +28,10 @@ class GameViewModel : ViewModel() {
     // Bloquear el tablero mientras se compara un par
     private val _isLocked = MutableStateFlow(false)
     val isLocked: StateFlow<Boolean> = _isLocked
+
+    // Número de parejas encontradas
+    private val _matchedPairs = MutableStateFlow(0)
+    val matchedPairs: StateFlow<Int> = _matchedPairs
 
     // ¿El juego terminó?
     private val _isGameOver = MutableStateFlow(false)
@@ -38,14 +43,16 @@ class GameViewModel : ViewModel() {
 
     fun resetGame() {
         // Duplicar los símbolos y mezclarlos
-        val shuffled = (symbols + symbols)
-            .mapIndexed { index, symbol -> Card(id = index, value = symbol) }
-            .shuffled()
+        val symbolsPairs = (symbols + symbols).shuffled()
+        val shuffled = symbolsPairs.mapIndexed { index, symbol -> 
+            Card(id = index, value = symbol) 
+        }
 
         _cards.value = shuffled
         _flippedCards.value = emptyList()
         _attempts.value = 0
         _isLocked.value = false
+        _matchedPairs.value = 0
         _isGameOver.value = false
     }
 
@@ -58,6 +65,9 @@ class GameViewModel : ViewModel() {
         // Si la carta ya está volteada o encontrada, ignorar
         val card = _cards.value.find { it.id == cardId } ?: return
         if (card.isFlipped || card.isMatched) return
+
+        // No permitir seleccionar la misma carta dos veces seguidas
+        if (currentFlipped.contains(cardId)) return
 
         // Voltear la carta clickeada
         _cards.value = _cards.value.map {
@@ -84,6 +94,7 @@ class GameViewModel : ViewModel() {
                             it.copy(isMatched = true)
                         else it
                     }
+                    _matchedPairs.value += 1
                 } else {
                     // No son pareja, ocultarlas de nuevo
                     _cards.value = _cards.value.map {

@@ -31,6 +31,8 @@ fun GameScreen(
 ) {
     val cards by gameViewModel.cards.collectAsStateWithLifecycle()
     val attempts by gameViewModel.attempts.collectAsStateWithLifecycle()
+    val isLocked by gameViewModel.isLocked.collectAsStateWithLifecycle()
+    val matchedPairs by gameViewModel.matchedPairs.collectAsStateWithLifecycle()
     val isGameOver by gameViewModel.isGameOver.collectAsStateWithLifecycle()
 
     // Cuando el juego termina, navegar a resultados
@@ -71,6 +73,15 @@ fun GameScreen(
             fontWeight = FontWeight.Medium
         )
 
+        Spacer(modifier = Modifier.height(4.dp))
+
+        Text(
+            text = "Parejas: $matchedPairs/8",
+            fontSize = 16.sp,
+            fontWeight = FontWeight.Medium,
+            color = MaterialTheme.colorScheme.primary
+        )
+
         Spacer(modifier = Modifier.height(16.dp))
 
         LazyVerticalGrid(
@@ -82,7 +93,8 @@ fun GameScreen(
             items(cards, key = { it.id }) { card ->
                 CardItem(
                     card = card,
-                    onClick = { gameViewModel.onCardClicked(card.id) }
+                    onClick = { gameViewModel.onCardClicked(card.id) },
+                    isLocked = isLocked
                 )
             }
         }
@@ -90,7 +102,7 @@ fun GameScreen(
 }
 
 @Composable
-fun CardItem(card: Card, onClick: () -> Unit) {
+fun CardItem(card: Card, onClick: () -> Unit, isLocked: Boolean = false) {
     val rotation by animateFloatAsState(
         targetValue = if (card.isFlipped || card.isMatched) 180f else 0f,
         animationSpec = tween(durationMillis = 400),
@@ -111,7 +123,7 @@ fun CardItem(card: Card, onClick: () -> Unit) {
                 },
                 shape = RoundedCornerShape(8.dp)
             )
-            .clickable(enabled = !card.isFlipped && !card.isMatched) { onClick() },
+            .clickable(enabled = !card.isFlipped && !card.isMatched && !isLocked) { onClick() },
         contentAlignment = Alignment.Center
     ) {
         if (isShowingFront) {
